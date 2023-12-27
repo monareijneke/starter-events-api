@@ -2,8 +2,12 @@ import * as Sentry from "@sentry/node";
 import { ProfilingIntegration } from "@sentry/profiling-node";
 import express from "express";
 
+import usersRouter from "../src/routes/users.js";
+import eventsRouter from "../src/routes/events.js";
+import categoriesRouter from "../src/routes/categories.js";
+import loginRouter from "../src/routes/login.js";
+
 const app = express();
-app.use(express.json());
 
 Sentry.init({
   dsn: "https://8446b6da04b1e933392ef5991cf1b9e4@o4506311320600576.ingest.sentry.io/4506345002172416",
@@ -27,6 +31,13 @@ app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
 // ***All middleware***
+app.use(express.json());
+
+app.use("/users", usersRouter);
+app.use("/events", eventsRouter);
+app.use("/categories", categoriesRouter);
+app.use("/login", loginRouter);
+
 app.get("/", function rootHandler(req, res) {
   res.end("Hello world!. Sinterklaas zit op het dak");
 });
