@@ -4,6 +4,7 @@ import getEventById from "../services/events/getEventById.js";
 import getEvents from "../services/events/getEvents.js";
 import updateEventById from "../services/events/updateEvent.js";
 import deleteEventById from "../services/events/deleteEvent.js";
+import authMiddleware from "../middleware/auth.js";
 
 const router = Router();
 
@@ -24,7 +25,7 @@ router.get("/:id", (req, res) => {
   }
 });
 
-router.post("/", (req, res) => {
+router.post("/", authMiddleware, (req, res) => {
   const {
     createdBy,
     title,
@@ -48,7 +49,7 @@ router.post("/", (req, res) => {
   res.status(201).json(newEvent);
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", authMiddleware, (req, res) => {
   const { id } = req.params;
   const event = deleteEventById(id);
 
@@ -59,7 +60,7 @@ router.delete("/:id", (req, res) => {
   }
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", authMiddleware, (req, res) => {
   const { id } = req.params;
   const {
     createdBy,
